@@ -1,1 +1,6 @@
 *.lock
+*.json
+test.py
+*.docx
+*.txt
+other
