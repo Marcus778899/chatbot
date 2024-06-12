@@ -5,3 +5,4 @@ test.py
 *.txt
 other
 __pycache__
+textbook_src

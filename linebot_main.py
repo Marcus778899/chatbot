@@ -85,7 +85,7 @@ async def handle_text_message(event: MessageEvent):
         )
 
 if __name__ == "__main__":
-    prefix_url = get_ngrok_url("https://2c73-220-128-132-194.ngrok-free.app")
+    prefix_url = get_ngrok_url("https://0668-220-128-132-194.ngrok-free.app")
     logging.basicConfig(level=logging.INFO)
     app.run(
         host='0.0.0.0', 
