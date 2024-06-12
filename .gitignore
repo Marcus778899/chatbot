@@ -4,3 +4,4 @@ test.py
 *.docx
 *.txt
 other
+__pycache__
