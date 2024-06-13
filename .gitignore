@@ -1,8 +1,5 @@
 *.lock
-*.json
 test.py
 *.docx
-*.txt
 .handler-saves
-other
 __pycache__
