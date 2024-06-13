@@ -26,7 +26,7 @@
 
 2. Second step :　Save token
 
-    ```text
+    ```plain_text
     it will generate the token
     copy this text to login_file
     ```
@@ -36,7 +36,7 @@
     ```bash
     mkdir ./login_info
     nano ./login_info/aka_Marcus_bot.txt
-    paste token information
+    # paste token information
     ```
 
 ### activate your service
@@ -49,4 +49,4 @@ poetry shell
 python telegram_demo.py
 ```
 
-![image](./readme_src/output.png)
+![image](./readme_src/telegram_output.png)
