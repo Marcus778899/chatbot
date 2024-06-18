@@ -3,6 +3,7 @@ package for telegram bot
 '''
 import logging
 from openai_api import ChatOpenAPI
+from database_for_bot import CassandraDB
 from .telegram_bot_config import bot
 from .telegram_register import *
 from .telegram_openai import *
