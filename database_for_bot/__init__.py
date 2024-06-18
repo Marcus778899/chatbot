@@ -1,1 +1,1 @@
-from cassandra_initial import CassandraDB
+from .cassandra_initial import CassandraDB

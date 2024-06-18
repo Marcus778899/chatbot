@@ -30,6 +30,11 @@ class CassandraDB:
         except Exception as e:
             logging.error(e)
 
+    def selet_data(self,username:str):
+        query = f"SELECT * FROM telegram.customer WHERE username = '{username}';"
+        rows = self.session.execute(query)
+        return rows.current_rows
+
     def close_driver(self):
         self.session.shutdown()
         self.cluster.shutdown()
