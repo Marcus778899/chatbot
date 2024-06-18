@@ -4,10 +4,11 @@ connect cassandra database
 import logging
 from pathlib import Path
 from cassandra.cluster import Cluster
+import json
 
+WORK_DIR = Path(__file__).parent.parent
 class CassandraDB:
     def __init__(self) -> None:
-        WORK_DIR = Path(__file__).parent.parent
         self.ip = []
         with open(f"{WORK_DIR}/login_info/cassandra_cluster.txt") as file:
             for row in file.readlines():
@@ -34,15 +35,10 @@ class CassandraDB:
         self.cluster.shutdown()
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     action = CassandraDB()
     session = action.session
-    example = {
-        "username": "Marcus",
-        "email": "s09203647@gmail.com",
-        "phone": "0903671355",
-        "password": "1234",
-    }
+    with open(f"{WORK_DIR}/login_info/customer_test.json","r") as file:
+        example = json.load(file)
     try:
         action.insert_into_customer_data(example)
         # print(rows.current_rows)
