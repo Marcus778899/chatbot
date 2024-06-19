@@ -2,7 +2,7 @@
 telegram function
 '''
 import logging
-from .typedef_for_bot import User
+from .typedef_for_bot import User,user_login
 from .telegram_bot_config import bot
 from . import CassandraDB
 
@@ -19,15 +19,6 @@ def insert_customer_information(information: User):
     finally:
         action.close_driver()
 
-def check_user_exist(username: str):
-    action = CassandraDB()
-    try:
-        action.session.execute(
-
-        )
-    finally:
-        action.close_driver()
-
 print("start register app!!")
 
 @bot.message_handler(commands=['start'])
@@ -40,11 +31,16 @@ def process_name(message):
     try:
         chat_id = message.chat.id
         username = message.text
-        logging.info(f"user {username} start register")
-        user = User(username)
-        user_dict[chat_id] = user
-        msg = bot.reply_to(message, "Please enter your email:")
-        bot.register_next_step_handler(msg, process_email)
+        if User.validate_username(username):
+            logging.info(f"user {username} start register")
+            user = User(username)
+            user_dict[chat_id] = user
+            msg = bot.reply_to(message, "Please enter your email:")
+            bot.register_next_step_handler(msg, process_email)
+        else:
+            msg = bot.reply_to(message, "Duplicate username. Please enter new username:")
+            bot.register_next_step_handler(msg, process_name)
+
     except Exception as e:
         logging.error(e)
 
@@ -100,21 +96,39 @@ def process_password(message):
 
 @bot.message_handler(regexp='^(check|info)$')
 def command_check(message):
-    bot.reply_to(message, "Checking your information...\nPlease Enter your username")
-    bot.register_next_step_handler(message, process_check)
+    bot.send_message(message.chat.id, "Please enter your username:")
+    bot.register_next_step_handler(message, process_username_check)
+    logging.info(f"{message.chat.id} check info")
 
-def process_check(message):
+def process_username_check(message):
     try:
         username = message.text
-        bot.reply_to(message, "Checking your information...\nPlease Enter your password")
-        bot.register_next_step_handler(message, process_check_password,username)
+        bot.send_message(
+            message.chat.id,
+            "Please enter your password"
+        )
+        bot.register_next_step_handler_by_chat_id(message.chat.id, process_password_check,username)
     except Exception as e:
         logging.error(e)
 
-def process_check_password(message):
+def process_password_check(message, username):
     try:
         password = message.text
-        
-        
+        login = user_login(username)
+        login_dict = {
+            'username': username, 
+            'password': password
+        }
+        if login.check_account(login_dict):
+            user_info = login.display_information()
+            response = f"Username: {user_info[0].username}\nEmail: {user_info[0].email}\nPhone: {user_info[0].phone}\nLevel: {user_info[0].level}"
+            bot.send_message(message.chat.id, response)
+        else:
+            bot.send_message(message.chat.id, "Invalid username or password.")
     except Exception as e:
         logging.error(e)
+        
+            
+            
+        
+        

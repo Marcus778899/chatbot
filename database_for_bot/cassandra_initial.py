@@ -3,7 +3,7 @@ connect cassandra database
 '''
 import logging
 from pathlib import Path
-from cassandra.cluster import Cluster
+from cassandra.cluster import Cluster,DCAwareRoundRobinPolicy
 import json
 
 WORK_DIR = Path(__file__).parent.parent
@@ -13,7 +13,11 @@ class CassandraDB:
         with open(f"{WORK_DIR}/login_info/cassandra_cluster.txt") as file:
             for row in file.readlines():
                 self.ip.append(row.strip())
-        self.cluster = Cluster(self.ip)
+        self.cluster = Cluster(
+            contact_points=self.ip,
+            load_balancing_policy=DCAwareRoundRobinPolicy(local_dc='datacenter1'),
+            protocol_version=4,
+        )
         self.session = self.cluster.connect(keyspace="telegram")
 
     def insert_into_customer_data(self, data: dict):
@@ -29,9 +33,24 @@ class CassandraDB:
             logging.info("create customer basic information")
         except Exception as e:
             logging.error(e)
+    
+    def check_the_username_exist(self, username: str) -> bool:
+        query = f"SELECT username FROM telegram.customer WHERE username = '{username}'"
+        rows = self.session.execute(query)
+        if rows.current_rows:
+            return True
+        
+    def check_the_account(self, login: dict) -> bool:
+        show_column = ['username', 'password']
+        query = f"SELECT {','.join(show_column)} FROM telegram.customer WHERE username = '{login['username']}'"
+        rows = self.session.execute(query)
+        if rows.current_rows and  rows.current_rows[0].password == login['password']:
+            return True
+        return False
 
     def selet_data(self,username:str):
-        query = f"SELECT * FROM telegram.customer WHERE username = '{username}';"
+        show_column = ['username','email', 'phone', 'level']
+        query = f"SELECT {','.join(show_column)} FROM telegram.customer WHERE username = '{username}';"
         rows = self.session.execute(query)
         return rows.current_rows
 
@@ -45,7 +64,10 @@ if __name__ == "__main__":
     with open(f"{WORK_DIR}/login_info/customer_test.json","r") as file:
         example = json.load(file)
     try:
-        action.insert_into_customer_data(example)
+        if action.check_the_username_exist(username = 'Marcus'):
+            print("exist")
+        else:
+            print("not exist")
         # print(rows.current_rows)
     finally:
         action.close_driver()
