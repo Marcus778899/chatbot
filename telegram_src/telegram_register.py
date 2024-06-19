@@ -21,7 +21,7 @@ def insert_customer_information(information: User):
 
 print("start register app!!")
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['register'])
 def send_welcome(message):
     bot.reply_to(message, "Hello! I'm a bot that can help you register your account.")
     bot.send_message(message.chat.id, "Please enter your username:")
