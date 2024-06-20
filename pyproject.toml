@@ -24,6 +24,7 @@ langchain-openai = "0.1.8"
 langchain-cli = "0.0.24"
 tenacity = "<8.4.0"
 cassandra-driver = "3.29.1"
+beautifulsoup4 = "4.12.3"
 
 
 [build-system]
