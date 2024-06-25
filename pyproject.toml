@@ -25,6 +25,8 @@ langchain-cli = "0.0.24"
 tenacity = "<8.4.0"
 cassandra-driver = "3.29.1"
 beautifulsoup4 = "4.12.3"
+flask-wtf = "1.2.1"
+flask-swagger-generator = "0.4"
 
 
 [build-system]

@@ -2,8 +2,8 @@
 
 ## LINE BOT
 
-1. python linebot_demo.py
-2. activate ngrok on <http://localhost:8081>
+1. python linebot_server.py
+2. activate ngrok on [http://localhost:8082](http://localhost:8082)
 3. submit webhook url on line developer
 
     **"/callback" must be added at the end**
@@ -46,7 +46,7 @@ poetry env info
 poetry lock
 poetry install
 poetry shell
-python telegram_demo.py
+python telegram_Server.py
 ```
 
 ![image](./readme_src/telegram_output.png)

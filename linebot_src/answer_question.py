@@ -37,7 +37,6 @@ def handle_message(event: MessageEvent):
     with api_client:
         reply_token = event.reply_token
         request_message = event.message.text
-        logging.info(f"event source is {event.source}")
         user_id = event.source.user_id
         logging.info(f"request_message is {request_message}")
 

@@ -48,11 +48,16 @@ class CassandraDB:
             return True
         return False
 
-    def selet_data(self,username:str):
+    def selet_account_data(self,username:str):
         show_column = ['username','email', 'phone', 'level']
         query = f"SELECT {','.join(show_column)} FROM telegram.customer WHERE username = '{username}';"
         rows = self.session.execute(query)
         return rows.current_rows
+    
+    def select_price_data(self, level: str):
+        query = f"SELECT price FROM telegram.level_payment WHERE level ='{level}';"
+        price = self.session.execute(query).current_rows[0].price
+        return price
 
     def close_driver(self):
         self.session.shutdown()
@@ -61,14 +66,15 @@ class CassandraDB:
 if __name__ == "__main__":
     action = CassandraDB()
     session = action.session
-    with open(f"{WORK_DIR}/login_info/customer_test.json","r") as file:
-        example = json.load(file)
+    # with open(f"{WORK_DIR}/login_info/customer_test.json","r") as file:
+    #     example = json.load(file)
     try:
-        if action.check_the_username_exist(username = 'Marcus'):
-            print("exist")
-        else:
-            print("not exist")
+        # if action.check_the_username_exist(username = 'Marcus'):
+        #     print("exist")
+        # else:
+        #     print("not exist")
         # print(rows.current_rows)
+        action.select_price_data(level='basic')
     finally:
         action.close_driver()
 

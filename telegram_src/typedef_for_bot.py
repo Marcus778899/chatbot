@@ -7,7 +7,7 @@ class User:
         self.email = None
         self.phone = None
         self.password = None
-        self.level = None # when customer pay for subscription
+        self.level = "free" # when customer pay for subscription
 
     @staticmethod
     def validate_username(username:str) -> bool:
@@ -67,7 +67,7 @@ class user_login:
     
     def display_information(self):
         action = CassandraDB()
-        information = action.selet_data(self.username)
+        information = action.selet_account_data(self.username)
         logging.info("User information retrieved")
         action.close_driver()
         return information
