@@ -4,15 +4,14 @@ connect cassandra database
 import logging
 from pathlib import Path
 from cassandra.cluster import Cluster,DCAwareRoundRobinPolicy
-import json
 
-WORK_DIR = Path(__file__).parent.parent
+WORKDIR = Path(__file__).parent
 class CassandraDB:
     def __init__(self) -> None:
         self.ip = []
-        with open(f"{WORK_DIR}/login_info/cassandra_cluster.txt") as file:
-            for row in file.readlines():
-                self.ip.append(row.strip())
+        with open(f"{WORKDIR}/cassandraInfo.txt", "r") as file:
+            for line in file:
+                self.ip.append(line.strip())
         self.cluster = Cluster(
             contact_points=self.ip,
             load_balancing_policy=DCAwareRoundRobinPolicy(local_dc='datacenter1'),
@@ -66,8 +65,8 @@ class CassandraDB:
 if __name__ == "__main__":
     action = CassandraDB()
     session = action.session
-    # with open(f"{WORK_DIR}/login_info/customer_test.json","r") as file:
-    #     example = json.load(file)
+    # # with open(f"{WORK_DIR}/login_info/customer_test.json","r") as file:
+    # #     example = json.load(file)
     try:
         # if action.check_the_username_exist(username = 'Marcus'):
         #     print("exist")

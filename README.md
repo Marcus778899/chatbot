@@ -1,15 +1,5 @@
 # ChatBot
 
-## LINE BOT
-
-1. python linebot_server.py
-2. activate ngrok on [http://localhost:8082](http://localhost:8082)
-3. submit webhook url on line developer
-
-    **"/callback" must be added at the end**
-
-![image](./readme_src/linebot_demo.png)
-
 ## Telegram Bot
 
 ### telegram BotFather

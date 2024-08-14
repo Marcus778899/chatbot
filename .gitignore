@@ -3,3 +3,4 @@ test.py
 *.docx
 .handler-saves
 __pycache__
+*.cfg

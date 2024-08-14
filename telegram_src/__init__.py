@@ -8,8 +8,6 @@ from .telegram_bot_config import bot
 from .telegram_register import *
 from .telegram_openai import *
 
-logging.basicConfig(level=logging.INFO)
-
 @bot.message_handler(commands=['start'])
 def command_hello(message):
     logging.info("receive hello command")

@@ -1,10 +1,10 @@
-from pathlib import Path
+from configparser import ConfigParser
+import os
 from telebot import TeleBot
 
-WORK_DIR = Path(__file__).parent.parent.absolute()
-with open(f"{WORK_DIR}/login_info/Marcus_First_Bot.txt","r") as file:
-    TOKEN = file.read().split('\n')[3]
-
+config = ConfigParser()
+config.read(os.path.join(os.path.dirname(__file__),'telegramInfo.cfg'))
+TOKEN = config.get('LOGIN', 'TOKEN')
 # init telegram bot
 bot = TeleBot(TOKEN,parse_mode=None)
 

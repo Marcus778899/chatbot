@@ -1,8 +1,17 @@
 import time
+from pathlib import Path
 import logging
 from urllib3.exceptions import ProtocolError
 from requests.exceptions import ConnectionError, ReadTimeout
 from telegram_src import bot
+
+logging.basicConfig(
+    filename = Path("logfile").absolute() / "log.txt",
+    filemode='a',
+    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+    datefmt='%H:%M:%S',
+    level=logging.INFO
+    )
 
 def start_bot():
     retry_count = 0
@@ -30,8 +39,4 @@ def start_bot():
             retry_count = 0
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', 
-        level=logging.INFO
-        )
     start_bot()
